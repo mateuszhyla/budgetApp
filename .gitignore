@@ -1,0 +1,8 @@
+bin/
+obj/
+*.depend
+*.layout
+*.txt
+*.xml
+*.zip
+*.cscope_file_list
