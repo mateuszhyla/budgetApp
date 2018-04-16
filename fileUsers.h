@@ -15,7 +15,6 @@ class FileUsers //: public Converters
 
     private:
     string pathXML;
-    string convertUserStructureToSingleLine(User);
     virtual string convertIntToString (int);
     string getXMLPath();
 };

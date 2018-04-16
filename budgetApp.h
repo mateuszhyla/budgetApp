@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 #include "usersHandler.h"
-//#include "contactsHandler.h"
+#include "recordsHandler.h"
 
 using namespace std;
 
@@ -16,7 +16,8 @@ private:
 	char budgetMenuUserSelection;
 	//char searchMenuUserSelection;
 	UsersHandler userHandler;
-	//ContactsHandler contactHandler;
+
+	RecordsHandler recordsHandler;
 	User loggedUser;
 	char displayMainMenu();
 	char displayBudgetMenu();

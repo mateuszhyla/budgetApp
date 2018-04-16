@@ -73,37 +73,18 @@ contactsWindow:
 
 	switch (budgetMenuUserSelection)
 	{
-/*
+
 	case '1':
-		searchWindowUserSelection = displaySearchMenu();
-
-		switch (searchWindowUserSelection)
-		{
-		case '1':
-			contactHandler.searchByName(loggedUser.getId());
-			break;
-
-		case '2':
-			contactHandler.searchBySurname(loggedUser.getId());
-			break;
-
-		default:
-			break;
-		}
+		//contactHandler.addContactToContactsBook(loggedUser.getId());
 		goto contactsWindow;
 		break;
 
-	case '2':
-		contactHandler.addContactToContactsBook(loggedUser.getId());
-		goto contactsWindow;
-		break;
-
-	case '3':
+	/*case '3':
 		contactHandler.showAllContacts(loggedUser.getId());
 		goto contactsWindow;
 		break;
 */
-	case '1':
+	case '2':
 		userHandler.changePassword(loggedUser);
 		goto contactsWindow;
 
@@ -120,10 +101,10 @@ char BudgetApp::displayBudgetMenu()
 	showConsoleTextInRed(".:Manage budget:.");
 	cout << "  User: " << loggedUser.getLogin();
 	cout << endl << endl;
-	//cout << "1. Search for contact" << endl;
+	cout << "1. Add income" << endl;
 	//cout << "2. Add new contact to your contact list" << endl;
 	//cout << "3. Show all contacts from your contact list" << endl;
-	cout << "1. Change password" << endl;
+	cout << "2. Change password" << endl;
 	cout << "0. Log off" << endl << endl;
 
 	cout << "Select a number to start an action..." << endl;
@@ -131,7 +112,8 @@ char BudgetApp::displayBudgetMenu()
 	do
 	{
 		userSelection = getch();
-	} while ((userSelection != '1') && (userSelection != '0'));// && (userSelection != '3') && (userSelection != '4') && (userSelection != '0'));
+	}
+	while ((userSelection != '1') && (userSelection != '0') && (userSelection != '2'));// && (userSelection != '4') && (userSelection != '0'));
 
 	return userSelection;
 }
