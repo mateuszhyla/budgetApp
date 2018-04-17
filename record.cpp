@@ -3,7 +3,7 @@
 
 using namespace std;
 
-Record:: Record (int recordId, int recordUserId, string recordDate, string recordCategory, double recordAmount)
+Record:: Record (int recordId, int recordUserId, string recordDate, string recordCategory, float recordAmount)
 {
     id = recordId;
     userId = recordUserId;
@@ -55,13 +55,13 @@ string Record::getCategory()
     return category;
 }
 
-void Record::setAmount(double recordAmount)
+void Record::setAmount(float recordAmount)
 {
     amount = recordAmount;
 }
 
 
-double Record::getAmount()
+float Record::getAmount()
 {
     return amount;
 }

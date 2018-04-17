@@ -7,6 +7,9 @@
 #include "Markup.h"
 #include <windows.h>
 #include <cstdio>
+#include <algorithm>
+#include <iomanip>
+#include <sstream>
 
 using namespace std;
 /*
@@ -43,11 +46,18 @@ vector <Record> FileRecords::readRecordsFromFile()
     return existingRecords;
 }
 */
-void FileRecords::updateRecordsDataBase(Record recordToUpdate, string action)
+void FileRecords::updateRecordsDataBase(Record recordToUpdate, string action, string recordType)
 {
+    string pathToFile = pathXML + "\\" + recordType + "s.xml";
+    std::transform(recordType.begin(), recordType.end(),recordType.begin(), ::toupper);
     bool incomeExists;
+    float amount = recordToUpdate.getAmount();
+    stringstream stream;
+    stream << fixed << setprecision(2) << amount;
+    string convertedAmount = stream.str();
+
     CMarkup xml;
-    xml.Load(pathXML);
+    xml.Load(pathToFile);
     xml.ResetPos();
     incomeExists = xml.FindElem();
     xml.IntoElem();
@@ -58,18 +68,19 @@ void FileRecords::updateRecordsDataBase(Record recordToUpdate, string action)
     {
         if (!incomeExists)
         {
-            xml.AddElem("INCOMES");
+            xml.AddElem(recordType + "S");
             xml.IntoElem();
         }
-        xml.AddElem( "INCOME" );
+        xml.ResetMainPos();
+        xml.InsertElem(recordType);
         xml.IntoElem();
-        xml.AddElem( "INCOMEID", recordToUpdate.getId() );
+        xml.AddElem( recordType + "ID", recordToUpdate.getId() );
         xml.AddElem( "USERID", recordToUpdate.getUserId() );
         xml.AddElem( "DATE", recordToUpdate.getDate() );
         xml.AddElem( "CATEGORY", recordToUpdate.getCategory() );
-        xml.AddElem( "AMOUNT", recordToUpdate.getAmount() );
+        xml.AddElem( "AMOUNT", convertedAmount );
         xml.OutOfElem();
-        xml.Save(pathXML);
+        xml.Save(pathToFile);
     }
     else
     {
@@ -80,25 +91,27 @@ void FileRecords::updateRecordsDataBase(Record recordToUpdate, string action)
 
 int FileRecords::findCurrentRecordId(string fileName)
 {
-    string pathToFile = pathXML + "\\" + fileName + ".xml";
+    string pathToFile = pathXML + "\\" + fileName + "s.xml";
+    std::transform(fileName.begin(), fileName.end(),fileName.begin(), ::toupper);
+
     int id = 1;
     bool fileExists = false;
 
     CMarkup xml;
-    xml.Load(pathXML);
+    xml.Load(pathToFile);
     fileExists = xml.FindElem();
 
     if (!fileExists)
     {
-        return 1;
+        return 0;
     }
 
     xml.IntoElem();
 
-  xml.FindChildElem("Record");
+  xml.FindChildElem(fileName);
 
   xml.IntoElem();
-        xml.FindElem( "ID" );
+        xml.FindElem( fileName + "ID" );
         return atoi(MCD_2PCSZ (xml.GetData()));
 
 }

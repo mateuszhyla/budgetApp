@@ -32,7 +32,27 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="Markup.cpp" />
+		<Unit filename="Markup.h" />
+		<Unit filename="amountChecker.cpp" />
+		<Unit filename="amountChecker.h" />
+		<Unit filename="budgetApp.cpp" />
+		<Unit filename="budgetApp.h" />
+		<Unit filename="dateChecker.cpp" />
+		<Unit filename="dateChecker.h" />
+		<Unit filename="fileRecords.cpp" />
+		<Unit filename="fileRecords.h" />
+		<Unit filename="fileUsers.cpp" />
+		<Unit filename="fileUsers.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="record.cpp" />
+		<Unit filename="record.h" />
+		<Unit filename="recordsHandler.cpp" />
+		<Unit filename="recordsHandler.h" />
+		<Unit filename="user.cpp" />
+		<Unit filename="user.h" />
+		<Unit filename="usersHandler.cpp" />
+		<Unit filename="usersHandler.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

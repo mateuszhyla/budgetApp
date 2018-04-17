@@ -11,11 +11,12 @@ class FileRecords //: public Converters
     public:
 
    // vector <Record> readRecordsFromFile();
-    void updateRecordsDataBase(Record, string);
+    void updateRecordsDataBase(Record, string, string);
     int findCurrentRecordId(string);
     string getXMLPath();
-    private:
     string pathXML;
+    private:
+
     //virtual string convertIntToString (int);
 
 };
