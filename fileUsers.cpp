@@ -92,18 +92,6 @@ void FileUsers::updateUsersDataBase(User userToUpdate, string action)
     }
 }
 
-/*string FileUsers::convertUserStructureToSingleLine(User userToConvert)
-{
-    string convertedUser;
-
-    convertedUser = convertIntToString(userToConvert.getId()) + "|";
-    convertedUser += userToConvert.getNickname()+ "|";
-    convertedUser += userToConvert.getPassword() + "|";
-
-    return convertedUser;
-
-}*/
-
 string FileUsers::convertIntToString (int id)
 {
 

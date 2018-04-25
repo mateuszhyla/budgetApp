@@ -14,7 +14,7 @@ public:
 
     void addRecord(int, string);
     RecordsHandler();
-    void displaySummary(string, int);
+    void manageSummary(string, int);
 
 private:
     Record addRecordDetails();
@@ -27,5 +27,8 @@ private:
     int newIncomeId;
     int newExpenditureId;
     void askForSummaryDate(vector <int>&, vector <int>&);
-
+    float calculateSum (vector <Record>);
+    void displaySummary (vector <Record>, vector <Record>, float, float);
+    void showConsoleTextInColor(string, int);
+    string convertFloatToString(float);
 };

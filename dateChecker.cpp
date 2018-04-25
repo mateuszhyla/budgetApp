@@ -140,12 +140,11 @@ bool DateChecker::checkDateFormat (string givenDate)
 
     if( regex_match(givenDate, pattern))
     {
-        cout << "date format is correct" << endl;
         return true;
     }
     else
     {
-        cout << "date format is incorrect" << endl;
+        cout << "Date format is incorrect" << endl;
         return false;
     }
 
@@ -180,7 +179,7 @@ bool DateChecker::checkDate (string &date, vector<int> currentDate)
 
     if (!checkIfDateIsValid(givenDateMembers, currentDate))
     {
-       cout << "date is not valid" <<endl;
+       cout << "Date is not valid" <<endl;
         return false;
     }
     return true;
@@ -221,24 +220,3 @@ bool DateChecker::compareDates(Record &firstRecord, Record &secondRecord)
     return false;
 }
 
-/*
-int main()
-{
-    vector <int> currentDate;
-    string date;
-   cout << "Current date: " << showCurrentDate(currentDate);
-
-    do
-    {
-        cout << endl << endl << "Type date (YYYY-MM-DD): ";
-        cin >> date;
-    }
-    while (!checkDate (date, currentDate));
-
-
-
-
-
-    return 0;
-}
-*/

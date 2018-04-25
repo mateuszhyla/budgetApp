@@ -5,9 +5,6 @@
 #include <conio.h>
 #include <windows.h>
 #include "budgetApp.h"
-//#include "contact.h"
-
-
 
 using namespace std;
 
@@ -66,10 +63,7 @@ char BudgetApp::displayMainMenu()
 char BudgetApp::manageBudgetMenu()
 {
 
-    //int contactId;
-
 budgetsWindow:
-    //contactId = readContactsDataFromFile(currentUserInfo.id, allContacts);
     budgetMenuUserSelection = displayBudgetMenu();
 
     switch (budgetMenuUserSelection)
@@ -86,17 +80,17 @@ budgetsWindow:
         break;
 
     case '3':
-        recordsHandler.displaySummary("current", loggedUser.getId());
+        recordsHandler.manageSummary("current", loggedUser.getId());
         goto budgetsWindow;
         break;
 
     case '4':
-        recordsHandler.displaySummary("previous", loggedUser.getId());
+        recordsHandler.manageSummary("previous", loggedUser.getId());
         goto budgetsWindow;
         break;
 
     case '5':
-        recordsHandler.displaySummary("custom", loggedUser.getId());
+        recordsHandler.manageSummary("custom", loggedUser.getId());
         goto budgetsWindow;
         break;
 
@@ -135,32 +129,11 @@ char BudgetApp::displayBudgetMenu()
 
     return userSelection;
 }
-/*
-char ContactsBook::displaySearchMenu()
-{
-	char userSelection;
 
-	system("cls");
-	showConsoleTextInRed(".:Search contact:.");
-	cout << endl << endl;
-	cout << "1. By name..." << endl;
-	cout << "2. By surname..." << endl;
-	cout << "0. Back" << endl << endl;
-	cout << "Select a number to start an action..." << endl;
-
-	do
-	{
-		userSelection = getch();
-	} while ((userSelection != '1') && (userSelection != '2') && (userSelection != '0'));
-
-	return userSelection;
-}
-*/
 void BudgetApp::showConsoleTextInRed(string header)
 {
     HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(console, 12);
     cout << header;
     SetConsoleTextAttribute(console, 15);
-
 }

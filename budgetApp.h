@@ -14,15 +14,12 @@ public:
 private:
     char mainMenuUserSelection;
 	char budgetMenuUserSelection;
-	//char searchMenuUserSelection;
-	UsersHandler userHandler;
-
-	RecordsHandler recordsHandler;
-	User loggedUser;
 	char displayMainMenu();
 	char displayBudgetMenu();
 	char manageBudgetMenu();
-	//char displaySearchMenu();
-	void showConsoleTextInRed(string);
 
+	UsersHandler userHandler;
+	RecordsHandler recordsHandler;
+	User loggedUser;
+	void showConsoleTextInRed(string);
 };

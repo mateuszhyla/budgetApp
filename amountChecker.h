@@ -2,13 +2,13 @@
 
 using namespace std;
 
-class AmountChecker //: public Converters
+class AmountChecker
 {
-  public:
+public:
     bool checkAmount(string, float &);
 
-  private:
+private:
     bool isPositive (float);
- float convertAmountToDouble(string);
+    float convertAmountToDouble(string);
 
 };

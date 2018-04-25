@@ -6,6 +6,7 @@
 #include <conio.h>
 #include <sstream>
 #include <iomanip>
+#include <sstream>
 
 using namespace std;
 
@@ -101,6 +102,7 @@ void RecordsHandler::addRecord(int userId, string recordType)
 void RecordsHandler::askForSummaryDate(vector <int> &startDateForSummary, vector <int> &endDateForSummary)
 {
     string startDate, endDate;
+    system ("cls");
     do
     {
         cout << endl << endl << "Type start date for summary (YYYY-MM-DD): ";
@@ -119,11 +121,71 @@ void RecordsHandler::askForSummaryDate(vector <int> &startDateForSummary, vector
     dateChecker.divideGivenDateIntoThreeNumbers(endDate, endDateForSummary);
 }
 
-void RecordsHandler::displaySummary(string period, int userId)
+float RecordsHandler::calculateSum(vector <Record> recordsToSum)
 {
-    string a;
-    vector <int> startDateForSummary;
-    vector <int> endDateForSummary;
+    float sum = 0.00;
+
+    for (int i = 0; i < recordsToSum.size(); i++)
+    {
+        sum += recordsToSum[i].getAmount();
+    }
+    return sum;
+}
+
+void RecordsHandler::showConsoleTextInColor(string text, int color)
+{
+    HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(console, color);
+    cout << text;
+    SetConsoleTextAttribute(console, 15);
+}
+
+void RecordsHandler::displaySummary(vector <Record> incomes, vector <Record> expenditures, float sumIncomes, float sumExpenditures)
+{
+    float ballance = sumIncomes - sumExpenditures;
+    system("cls");
+    cout << fixed;
+    cout << setprecision(2);
+
+    showConsoleTextInColor("INCOMES", 10);
+    cout << endl;
+
+    for (int i = 0; i < incomes.size(); i++)
+    {
+        cout << incomes[i].getDate() << setw(20) << incomes[i].getCategory() << setw(10) << incomes[i].getAmount() << endl;
+    }
+    cout << endl << "SUM OF INCOMES:" << setw(25);
+    showConsoleTextInColor(convertFloatToString(sumIncomes), 10);
+    cout << endl << endl;
+
+    showConsoleTextInColor("EXPENDITURES", 12);
+    cout << endl;
+
+    for (int i = 0; i < expenditures.size(); i++)
+    {
+        cout << expenditures[i].getDate() << setw(20) << expenditures[i].getCategory() << setw(10) << expenditures[i].getAmount() << endl;
+    }
+    cout << endl << "SUM OF EXPENDITURES:" << setw(20);
+    showConsoleTextInColor(convertFloatToString(sumExpenditures), 12);
+    cout << endl << endl;
+
+    cout << endl << endl << "PERIOD BALANCE:" << setw(25);
+    if (ballance > 0)
+    {
+        showConsoleTextInColor(convertFloatToString(sumIncomes - sumExpenditures), 10);
+    }
+    else
+    {
+        showConsoleTextInColor(convertFloatToString(sumIncomes - sumExpenditures), 12);
+    }
+    cout << endl << endl;
+    system ("pause");
+}
+
+void RecordsHandler::manageSummary(string period, int userId)
+{
+    float sumIncomes, sumExpenditures;
+    vector <int> startDateForSummary, endDateForSummary;
     bool custom = false;
 
     if (period == "current")
@@ -144,7 +206,6 @@ void RecordsHandler::displaySummary(string period, int userId)
             endDateForSummary[1] = 12;
             endDateForSummary[0] -= 1;
         }
-
     }
     else
     {
@@ -155,37 +216,19 @@ void RecordsHandler::displaySummary(string period, int userId)
     incomes = fileHandler.readRecordsFromFile(startDateForSummary, endDateForSummary, "income", userId, custom);
     expenditures = fileHandler.readRecordsFromFile(startDateForSummary, endDateForSummary, "expenditure", userId, custom);
 
-
-    system("cls");
-
     dateChecker.sortRecords(incomes);
     dateChecker.sortRecords(expenditures);
 
-    cout << fixed;
-    cout << setprecision(2);
-    for (int i = 0; i < incomes.size(); i++)
-    {
-        cout << incomes[i].getDate() << " " << incomes[i].getCategory() << " " << incomes[i].getAmount() << endl;
-    }
-    cout << endl;
+    sumIncomes = calculateSum(incomes);
+    sumExpenditures = calculateSum(expenditures);
 
-     for (int i = 0; i < expenditures.size(); i++)
-    {
-        cout << expenditures[i].getDate() << " " << expenditures[i].getCategory() << " " << expenditures[i].getAmount() << endl;
-    }
-
-    cin >> a;
-
+    displaySummary(incomes, expenditures, sumIncomes, sumExpenditures);
 }
 
-/*
-
-string ContactsHandler::convertIntToString (int id)
+string RecordsHandler::convertFloatToString(float number)
 {
-    ostringstream ss;
-    ss << id;
-    string str =ss.str();
-
-    return str;
+    stringstream ss;
+    ss << number;
+    return ss.str();
 }
-*/
+

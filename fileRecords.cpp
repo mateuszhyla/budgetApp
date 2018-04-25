@@ -166,29 +166,6 @@ bool FileRecords::checkIfDateIsInsideRange(string dateFromRecord, vector <int> s
     return meetRequirements;
 }
 
-
-/*string FileUsers::convertUserStructureToSingleLine(User userToConvert)
-{
-    string convertedUser;
-
-    convertedUser = convertIntToString(userToConvert.getId()) + "|";
-    convertedUser += userToConvert.getNickname()+ "|";
-    convertedUser += userToConvert.getPassword() + "|";
-
-    return convertedUser;
-
-}*/
-
-/*string FileUsers::convertIntToString (int id)
-{
-
-    ostringstream ss;
-    ss << id;
-    string str =ss.str();
-
-    return str;
-}
-*/
 string FileRecords::getXMLPath ()
 {
     string directory, path;
