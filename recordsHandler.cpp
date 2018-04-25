@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <conio.h>
 #include <sstream>
-
+#include <iomanip>
 
 using namespace std;
 
@@ -28,12 +28,12 @@ Record RecordsHandler::addRecordDetails()
     cout << "Type category: ";
     cin >> category;
 
-        do
-        {
-            cout << endl << endl << "Type amount: ";
-            cin >> amount;
-        }
-        while (!amountChecker.checkAmount(amount, convertedAmount));
+    do
+    {
+        cout << endl << endl << "Type amount: ";
+        cin >> amount;
+    }
+    while (!amountChecker.checkAmount(amount, convertedAmount));
 
 
     newRecord.setDate(date);
@@ -48,7 +48,7 @@ string RecordsHandler::dateWindow()
     string date;
     char userSelection;
 
-     system("cls");
+    system("cls");
     cout << "Do you want to add record to database with current date? (y/n)" << endl;
     do
     {
@@ -98,7 +98,85 @@ void RecordsHandler::addRecord(int userId, string recordType)
     Sleep(1500);
 }
 
+void RecordsHandler::askForSummaryDate(vector <int> &startDateForSummary, vector <int> &endDateForSummary)
+{
+    string startDate, endDate;
+    do
+    {
+        cout << endl << endl << "Type start date for summary (YYYY-MM-DD): ";
+        cin >> startDate;
+    }
+    while (!dateChecker.checkDate (startDate, dateChecker.getCurrentDate()));
 
+    dateChecker.divideGivenDateIntoThreeNumbers(startDate, startDateForSummary);
+    do
+    {
+        cout << endl << endl << "Type end date for summary (YYYY-MM-DD): ";
+        cin >> endDate;
+    }
+    while (!dateChecker.checkDate (endDate, dateChecker.getCurrentDate()));
+
+    dateChecker.divideGivenDateIntoThreeNumbers(endDate, endDateForSummary);
+}
+
+void RecordsHandler::displaySummary(string period, int userId)
+{
+    string a;
+    vector <int> startDateForSummary;
+    vector <int> endDateForSummary;
+    bool custom = false;
+
+    if (period == "current")
+    {
+        endDateForSummary = dateChecker.getCurrentDate();
+        startDateForSummary = endDateForSummary;
+        startDateForSummary[2] = 1;
+    }
+    else if (period == "previous")
+    {
+        endDateForSummary = dateChecker.getCurrentDate();
+        if (endDateForSummary[1] > 1)
+        {
+            endDateForSummary[1] -= 1;
+        }
+        else
+        {
+            endDateForSummary[1] = 12;
+            endDateForSummary[0] -= 1;
+        }
+
+    }
+    else
+    {
+        askForSummaryDate (startDateForSummary, endDateForSummary);
+        custom = true;
+    }
+
+    incomes = fileHandler.readRecordsFromFile(startDateForSummary, endDateForSummary, "income", userId, custom);
+    expenditures = fileHandler.readRecordsFromFile(startDateForSummary, endDateForSummary, "expenditure", userId, custom);
+
+
+    system("cls");
+
+    dateChecker.sortRecords(incomes);
+    dateChecker.sortRecords(expenditures);
+
+    cout << fixed;
+    cout << setprecision(2);
+    for (int i = 0; i < incomes.size(); i++)
+    {
+        cout << incomes[i].getDate() << " " << incomes[i].getCategory() << " " << incomes[i].getAmount() << endl;
+    }
+    cout << endl;
+
+     for (int i = 0; i < expenditures.size(); i++)
+    {
+        cout << expenditures[i].getDate() << " " << expenditures[i].getCategory() << " " << expenditures[i].getAmount() << endl;
+    }
+
+    cin >> a;
+
+}
 
 /*
 

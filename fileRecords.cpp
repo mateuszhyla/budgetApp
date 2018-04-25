@@ -12,40 +12,51 @@
 #include <sstream>
 
 using namespace std;
-/*
-vector <Record> FileRecords::readRecordsFromFile()
+
+vector <Record> FileRecords::readRecordsFromFile(vector <int> startDateForSummary, vector <int> endDateForSummary, string fileName, int userId, bool custom)
 {
     vector <Record> existingRecords;
     Record recordInfo;
+    int tempId;
+    string tempDate;
+    string pathToFile = pathXML + "\\" + fileName + "s.xml";
+    std::transform(fileName.begin(), fileName.end(),fileName.begin(), ::toupper);
+
     CMarkup xml;
+    xml.Load(pathToFile);
 
-    pathXML = getXMLPath();
-
-    xml.Load(pathXML);
     xml.FindElem();
     xml.IntoElem();
 
-    while ( xml.FindElem("USER") )
+    while ( xml.FindElem(fileName) )
     {
         xml.IntoElem();
-        xml.FindElem( "ID" );
+        xml.FindElem( fileName + "ID" );
         recordInfo.setId(atoi(MCD_2PCSZ (xml.GetData())));
-        xml.FindElem( "LOGIN" );
-        recordInfo.setLogin(xml.GetData());
-        xml.FindElem( "PASSWORD" );
-        recordInfo.setPassword(xml.GetData());
-        xml.FindElem( "NAME" );
-        recordInfo.setName(xml.GetData());
-        xml.FindElem( "SURNAME" );
-        recordInfo.setSurname(xml.GetData());
-        xml.OutOfElem();
+        xml.FindElem( "USERID" );
+        tempId = atoi(MCD_2PCSZ (xml.GetData()));
+        if (tempId = userId)
+        {
+            recordInfo.setId(userId);
+            xml.FindElem( "DATE" );
+            tempDate = xml.GetData();
+            if (checkIfDateIsInsideRange(tempDate, startDateForSummary, endDateForSummary, custom))
+            {
+                recordInfo.setDate(tempDate);
+                xml.FindElem( "CATEGORY" );
+                recordInfo.setCategory(xml.GetData());
+                xml.FindElem( "AMOUNT" );
+                recordInfo.setAmount(atof(MCD_2PCSZ (xml.GetData())));
 
-        existingRecords.push_back(recordInfo);
+                existingRecords.push_back(recordInfo);
+            }
+        }
+          xml.OutOfElem();
     }
 
     return existingRecords;
 }
-*/
+
 void FileRecords::updateRecordsDataBase(Record recordToUpdate, string action, string recordType)
 {
     string pathToFile = pathXML + "\\" + recordType + "s.xml";
@@ -108,13 +119,53 @@ int FileRecords::findCurrentRecordId(string fileName)
 
     xml.IntoElem();
 
-  xml.FindChildElem(fileName);
+    xml.FindChildElem(fileName);
 
-  xml.IntoElem();
-        xml.FindElem( fileName + "ID" );
-        return atoi(MCD_2PCSZ (xml.GetData()));
+    xml.IntoElem();
+    xml.FindElem( fileName + "ID" );
+    return atoi(MCD_2PCSZ (xml.GetData()));
 
 }
+
+bool FileRecords::calculateDays (vector <int> recordDate, vector <int> startDate, vector <int> endDate)
+{
+    int daysForRecordDate, daysForStartDate, daysForEndDate;
+
+    daysForRecordDate = recordDate[0] * 365 + recordDate [1] * 30 + recordDate [2];
+    daysForStartDate = startDate[0] * 365 + startDate [1] * 30 + startDate [2];
+    daysForEndDate = endDate[0] * 365 + endDate [1] * 30 + endDate [2];
+
+    if ((daysForStartDate <= daysForRecordDate) && (daysForEndDate >= daysForRecordDate))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool FileRecords::checkIfDateIsInsideRange(string dateFromRecord, vector <int> startDate, vector <int> endDate, bool custom)
+{
+    bool meetRequirements = false;
+    vector <int> convertedDateFromRecord;
+    dateChecker.divideGivenDateIntoThreeNumbers(dateFromRecord, convertedDateFromRecord);
+
+    if (!custom)
+    {
+        if ((convertedDateFromRecord[0] == endDate[0]) && (convertedDateFromRecord[1] == endDate[1]))
+        {
+            meetRequirements = true;
+        }
+    }
+    else
+    {
+        meetRequirements = calculateDays(convertedDateFromRecord, startDate, endDate);
+    }
+
+    return meetRequirements;
+}
+
 
 /*string FileUsers::convertUserStructureToSingleLine(User userToConvert)
 {

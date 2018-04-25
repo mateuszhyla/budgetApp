@@ -14,6 +14,7 @@ public:
 
     void addRecord(int, string);
     RecordsHandler();
+    void displaySummary(string, int);
 
 private:
     Record addRecordDetails();
@@ -23,8 +24,8 @@ private:
     FileRecords fileHandler;
     DateChecker dateChecker;
     AmountChecker amountChecker;
-    //DateHandler dateHandler;
     int newIncomeId;
     int newExpenditureId;
+    void askForSummaryDate(vector <int>&, vector <int>&);
 
 };

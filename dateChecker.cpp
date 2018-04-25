@@ -195,6 +195,32 @@ vector <int> DateChecker::getCurrentDate()
 {
     return currentDate;
 }
+
+void DateChecker::sortRecords(vector <Record> & recordsToBeSorted)
+{
+    sort(recordsToBeSorted.begin(), recordsToBeSorted.end(), compareDates);
+}
+
+bool DateChecker::compareDates(Record &firstRecord, Record &secondRecord)
+{
+   string firstDateString = firstRecord.getDate();
+   string secondDateString = secondRecord.getDate();
+
+   vector <int> firstDate, secondDate;
+   divideGivenDateIntoThreeNumbers(firstDateString, firstDate);
+   divideGivenDateIntoThreeNumbers(secondDateString, secondDate);
+
+
+    if (firstDate[0] < secondDate[0])
+        return true;
+    if (firstDate[0] == secondDate[0] && firstDate[1] < secondDate[1])
+        return true;
+    if (firstDate[0] == secondDate[0] && firstDate[1] == secondDate[1] && firstDate[2] < secondDate[2])
+        return true;
+
+    return false;
+}
+
 /*
 int main()
 {

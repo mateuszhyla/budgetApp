@@ -23,4 +23,5 @@ public:
     string getCategory();
     void setAmount(float);
     float getAmount();
+
 };
